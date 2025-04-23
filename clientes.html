@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestión de clientes para M&D Home">
+    <title>M&D Home - Clientes</title>
+    <link rel="icon" href="assets/Logo-Noe.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        // Hacer jsPDF disponible globalmente
+        window.jsPDF = window.jspdf.jsPDF;
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-clientes" class="bg-gray-100 min-h-screen-flex">
+
+    <!-- Menú hamburguesa fijo durante scroll -->
+    <div class="mobile-menu-button fixed top-4 right-4 z-50 bg-brand-fuchsia text-white p-3 rounded-full shadow-lg cursor-pointer">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Overlay del menú -->
+    <div class="menu-overlay fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300"></div>
+
+    <!-- Menú lateral -->
+    <nav class="side-menu fixed top-0 right-0 h-full w-64 bg-white z-50 transform translate-x-full transition-transform duration-300 shadow-xl overflow-y-auto">
+        <div class="p-4 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-brand-fuchsia">Menú</h2>
+                <button class="close-menu text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="py-4">
+            <a href="index.html" class="block py-2 px-4 text-gray-800 hover:bg-brand-fuchsia hover:text-white transition duration-200">
+                <i class="fas fa-home mr-2"></i> Inicio
+            </a>
+            <a href="stock.html" class="block py-2 px-4 text-gray-800 hover:bg-brand-fuchsia hover:text-white transition duration-200">
+                <i class="fas fa-cubes mr-2"></i> Stock
+            </a>
+            <a href="clientes.html" class="block py-2 px-4 text-white bg-brand-violet transition duration-200">
+                <i class="fas fa-user-friends mr-2"></i> Clientes
+            </a>
+            <a href="ventas.html" class="block py-2 px-4 text-gray-800 hover:bg-brand-fuchsia hover:text-white transition duration-200">
+                <i class="fas fa-chart-line mr-2"></i> Estadísticas
+            </a>
+        </div>
+    </nav>
+
+    <header class="bg-brand-fuchsia text-white shadow-md">
+        <div class="container mx-auto px-6 py-3 flex items-center">
+            <div class="flex items-center">
+                <img src="assets/Logo.png.png" alt="Logo M&D Home" class="h-16 mr-3">
+                <h1 class="text-2xl font-bold">M&D Home</h1>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <h2 class="text-3xl font-bold text-brand-fuchsia mb-6">Gestión de Clientes</h2>
+
+        <div id="messageArea" class="mb-4" role="alert"></div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Agregar Nueva Clienta</h3>
+            <form id="addClientForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="clientName" class="block text-sm font-medium text-gray-700 mb-1">Nombre de la Clienta</label>
+                    <input type="text" id="clientName" name="clientName" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-violet focus:border-brand-violet"
+                           aria-required="true">
+                </div>
+                <div class="flex items-end">
+                    <button type="submit"
+                            class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-2 px-4 rounded-md transition duration-300 h-10">
+                        <i class="fas fa-user-plus mr-2" aria-hidden="true"></i>Agregar Clienta
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Lista de Clientes</h3>
+            <div class="overflow-x-auto">
+                <table id="clientsTable" class="min-w-full divide-y divide-gray-200 border border-gray-200" role="grid">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deuda</th>
+                            <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientsTableBody" class="bg-white divide-y divide-gray-200">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal de Compra -->
+        <div id="purchaseModal" class="modal">
+            <div class="modal-content max-w-2xl">
+                <span class="modal-close-btn">&times;</span>
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Nueva Compra</h3>
+                <form id="purchaseForm" class="grid grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
+                        <p id="purchaseClientName" class="font-semibold"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label for="purchaseDate" class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+                        <input type="date" id="purchaseDate" name="purchaseDate" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-violet focus:border-brand-violet"
+                               value="">
+                    </div>
+                    <div class="mb-4 col-span-2">
+                        <label for="purchaseItemSelect" class="block text-sm font-medium text-gray-700 mb-1">Producto</label>
+                        <select id="purchaseItemSelect" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-violet focus:border-brand-violet" required>
+                            <option value="">-- Selecciona un producto --</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="purchaseQuantity" class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+                        <input type="number" id="purchaseQuantity" name="purchaseQuantity" required min="1" value="1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-violet focus:border-brand-violet">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Precio Unitario</label>
+                        <p id="purchaseItemPrice" class="font-semibold">--</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Stock Disponible</label>
+                        <p id="purchaseAvailableStock" class="font-semibold">--</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Total</label>
+                        <p id="purchaseTotal" class="font-semibold text-xl">--</p>
+                    </div>
+                    <div id="partialPaymentContainer" class="mb-4 hidden col-span-2">
+                        <label for="partialPaymentAmount" class="block text-sm font-medium text-gray-700 mb-1">Monto Abonado</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="partialPaymentAmount" name="partialPaymentAmount" min="0" step="0.01"
+                                   class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-violet focus:border-brand-violet">
+                            <button type="button" id="registerPartialPaymentBtn" class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                                Registrar
+                            </button>
+                        </div>
+                    </div>
+                    <div id="purchaseMessageArea" class="mb-4 col-span-2" role="alert"></div>
+                    <div class="flex justify-between space-x-4 col-span-2">
+                        <button type="button" id="fullPaymentBtn" class="flex-1 bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                            Pago Total
+                        </button>
+                        <button type="button" id="partialPaymentBtn" class="flex-1 bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                            Pago Parcial
+                        </button>
+                        <button type="button" id="noPaymentBtn" class="flex-1 bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                            No Pago
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal de Pago -->
+        <div id="paymentModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close-btn">&times;</span>
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Registrar Pago</h3>
+                <form id="paymentForm">
+                    <input type="hidden" id="paymentClientId">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
+                        <p id="paymentClientName" class="font-semibold"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Deuda Actual</label>
+                        <p id="paymentCurrentDebt" class="font-semibold">$0</p>
+                    </div>
+                    <div class="mb-4">
+                        <label for="paymentDate" class="block text-sm font-medium text-gray-700 mb-1">Fecha del Pago</label>
+                        <input type="date" id="paymentDate" name="paymentDate" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-violet focus:border-brand-violet"
+                               value="">
+                    </div>
+                    <div class="mb-4">
+                        <label for="paymentAmount" class="block text-sm font-medium text-gray-700 mb-1">Monto del Pago</label>
+                        <input type="number" id="paymentAmount" name="paymentAmount" required min="0" step="0.01"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-violet focus:border-brand-violet">
+                    </div>
+                    <div id="paymentMessageArea" class="mb-4" role="alert"></div>
+                    <button type="submit" class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                        Registrar Pago
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal de Movimientos -->
+        <div id="movementsModal" class="modal">
+            <div class="modal-content max-w-4xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800">Historial de Movimientos</h3>
+                    <button id="generatePdfBtn" class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                        <i class="fas fa-file-pdf mr-2" aria-hidden="true"></i>Generar PDF
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
+                                <p id="movementsClientName" class="font-semibold text-gray-900"></p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Deuda Actual</label>
+                                <p id="movementsCurrentDebt" class="font-semibold text-red-600"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pago</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="movementsList" class="bg-white divide-y divide-gray-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="movementsMessageArea" class="mt-4" role="alert"></div>
+            </div>
+        </div>
+
+        <!-- Modal de Opciones de Registro -->
+        <div id="registerOptionsModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close-btn">&times;</span>
+                <h3 class="text-xl font-semibold text-gray-800 mb-6">Registrar para <span id="registerClientName" class="text-brand-fuchsia"></span></h3>
+                <div class="grid grid-cols-1 gap-4">
+                    <button id="registerPurchaseBtn" class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+                        <i class="fas fa-shopping-cart mr-2" aria-hidden="true"></i>
+                        Registrar Compra
+                    </button>
+                    <button id="registerPaymentBtn" class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+                        <i class="fas fa-money-bill-wave mr-2" aria-hidden="true"></i>
+                        Registrar Pago
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal de Pruebas -->
+        <div id="trialsModal" class="modal">
+            <div class="modal-content max-w-4xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800">Pruebas Pendientes</h3>
+                    <button id="closeTrialsModal" class="modal-close-btn">&times;</button>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
+                                <p id="trialsClientName" class="font-semibold text-gray-900"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
+                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="trialsList" class="bg-white divide-y divide-gray-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="trialsMessageArea" class="mt-4" role="alert"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-auto">
+        <p>&copy; 2025 Bella Indumentaria Femenina. Todos los derechos reservados.</p>
+    </footer>
+
+    <script defer src="app.js"></script>
+</body>
+</html>

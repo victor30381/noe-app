@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de gestión para M&D Home">
+    <title>M&D Home</title>
+    <link rel="icon" href="assets/Logo-Noe.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-index" class="bg-gray-100 min-h-screen-flex">
+
+    <!-- Se eliminó el menú hamburguesa ya que los botones centrales proporcionan navegación -->
+
+    <header class="bg-brand-fuchsia text-white shadow-md">
+        <div class="container mx-auto px-6 py-3 text-center">
+            <h1 class="text-3xl font-bold">M&D Home</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 flex flex-col items-center justify-center flex-grow">
+        <div class="text-center mb-12">
+            <img src="assets/Logo.png.png" alt="Logo M&D Home" class="h-80 mb-8 mx-auto">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <a href="stock.html" class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-6 px-8 rounded-lg text-xl transition duration-300 flex flex-col items-center">
+                    <i class="fas fa-cubes text-4xl mb-3" aria-hidden="true"></i>
+                    Stock
+                </a>
+                
+                <a href="clientes.html" class="bg-brand-violet hover:bg-brand-violet-dark text-white font-bold py-6 px-8 rounded-lg text-xl transition duration-300 flex flex-col items-center">
+                    <i class="fas fa-user-friends text-4xl mb-3" aria-hidden="true"></i>
+                    Clientes
+                </a>
+                
+                <a href="ventas.html" class="bg-brand-fuchsia hover:bg-brand-fuchsia-dark text-white font-bold py-6 px-8 rounded-lg text-xl transition duration-300 flex flex-col items-center">
+                    <i class="fas fa-chart-line text-4xl mb-3" aria-hidden="true"></i>
+                    Estadísticas
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-auto">
+        <p>&copy; 2025 M&D Home. Todos los derechos reservados.</p>
+    </footer>
+
+    <script defer src="app.js"></script>
+</body>
+</html>
