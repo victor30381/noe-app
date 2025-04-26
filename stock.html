@@ -8,7 +8,7 @@
     <link rel="icon" href="assets/Logo-Noe.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body id="page-stock" class="bg-gray-100 min-h-screen-flex">
 
@@ -27,6 +27,17 @@
                 <h2 class="text-xl font-bold text-brand-fuchsia">Menú</h2>
                 <button class="close-menu text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div id="user-info" class="p-4 border-b border-gray-200">
+            <div class="flex flex-col items-center space-y-2">
+                <img id="user-avatar" src="" alt="Avatar del usuario" class="w-16 h-16 rounded-full">
+                <p id="user-name" class="font-semibold"></p>
+                <p id="user-email" class="text-sm text-gray-600"></p>
+                <button id="logout-btn" class="mt-2 flex items-center justify-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md transition duration-300 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar sesión</span>
                 </button>
             </div>
         </div>
@@ -157,6 +168,16 @@
         </div>
     </div>
 
-    <script defer src="app.js"></script>
+    <!-- Firebase Config -->
+    <script type="module" src="js/firebase-config.js"></script>
+    
+    <!-- Firebase Adapter -->
+    <script type="module" src="js/firebase-adapter.js"></script>
+    
+    <!-- App Script con Firebase -->
+    <script defer src="js/app-firebase.js" type="module"></script>
+    
+    <!-- Auth Script -->
+    <script type="module" src="js/auth.js"></script>
 </body>
 </html>

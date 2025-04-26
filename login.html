@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inicio de sesión para M&D Home">
+    <title>M&D Home - Iniciar Sesión</title>
+    <link rel="icon" href="assets/Logo-Noe.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+        .login-container {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <div class="login-container bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <div class="text-center mb-8">
+            <img src="assets/Logo.png.png" alt="Logo M&D Home" class="h-40 mx-auto mb-6">
+            <h1 class="text-3xl font-bold text-brand-fuchsia">M&D Home</h1>
+            <p class="text-gray-600 mt-2">Inicia sesión para continuar</p>
+        </div>
+        
+        <div id="messageArea" class="mb-6 hidden" role="alert"></div>
+        
+        <button id="login-btn" class="w-full flex items-center justify-center space-x-3 bg-white hover:bg-gray-100 text-gray-700 font-medium py-3 px-4 border border-gray-300 rounded-md shadow-sm transition duration-300 mb-4">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="w-6 h-6">
+            <span>Iniciar sesión con Google</span>
+        </button>
+        
+        <div class="text-center text-sm text-gray-500 mt-8">
+            <p>&copy; 2025 M&D Home. Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <!-- Firebase Config -->
+    <script type="module" src="js/firebase-config.js"></script>
+    
+    <!-- Login Script -->
+    <script type="module">
+        import { signInWithGoogle } from './js/firebase-config.js';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            const messageArea = document.getElementById('messageArea');
+            
+            // Verificar si ya hay una sesión activa
+            import('./js/firebase-config.js').then(module => {
+                const auth = module.getAuth();
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        // Si ya hay un usuario autenticado, redirigir a index.html
+                        window.location.href = 'index.html';
+                    }
+                });
+            });
+            
+            // Configurar el botón de inicio de sesión
+            if (loginBtn) {
+                loginBtn.addEventListener('click', async function() {
+                    try {
+                        loginBtn.disabled = true;
+                        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Iniciando sesión...';
+                        
+                        await signInWithGoogle();
+                        
+                        // Redirigir a index.html después de iniciar sesión exitosamente
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        console.error('Error al iniciar sesión:', error);
+                        
+                        // Mostrar mensaje de error
+                        messageArea.classList.remove('hidden');
+                        messageArea.classList.add('message', 'message-error');
+                        messageArea.textContent = 'Error al iniciar sesión. Inténtalo de nuevo.';
+                        
+                        // Restaurar el botón
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="w-6 h-6 mr-3"> <span>Iniciar sesión con Google</span>';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

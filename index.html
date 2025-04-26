@@ -8,11 +8,62 @@
     <link rel="icon" href="assets/Logo-Noe.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .side-menu {
+            transition: transform 0.3s ease;
+        }
+        .side-menu.open {
+            transform: translateX(0);
+        }
+    </style>
 </head>
 <body id="page-index" class="bg-gray-100 min-h-screen-flex">
 
-    <!-- Se eliminó el menú hamburguesa ya que los botones centrales proporcionan navegación -->
+    <!-- Menú hamburguesa fijo durante scroll -->
+    <div class="mobile-menu-button fixed top-4 right-4 z-50 bg-brand-fuchsia text-white p-3 rounded-full shadow-lg cursor-pointer">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Overlay del menú -->
+    <div class="menu-overlay fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300"></div>
+
+    <!-- Menú lateral -->
+    <nav class="side-menu fixed top-0 right-0 h-full w-64 bg-white z-50 transform translate-x-full transition-transform duration-300 shadow-xl overflow-y-auto">
+        <div class="p-4 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-brand-fuchsia">Menú</h2>
+                <button class="close-menu text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div id="user-info" class="p-4 border-b border-gray-200">
+            <div class="flex flex-col items-center space-y-2">
+                <img id="user-avatar" src="" alt="Avatar del usuario" class="w-16 h-16 rounded-full">
+                <p id="user-name" class="font-semibold"></p>
+                <p id="user-email" class="text-sm text-gray-600"></p>
+                <button id="logout-btn" class="mt-2 flex items-center justify-center space-x-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-md transition duration-300 w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar sesión</span>
+                </button>
+            </div>
+        </div>
+        <div class="py-4">
+            <a href="index.html" class="block py-2 px-4 text-white bg-brand-fuchsia transition duration-200">
+                <i class="fas fa-home mr-2"></i> Inicio
+            </a>
+            <a href="stock.html" class="block py-2 px-4 text-gray-800 hover:bg-brand-fuchsia hover:text-white transition duration-200">
+                <i class="fas fa-cubes mr-2"></i> Stock
+            </a>
+            <a href="clientes.html" class="block py-2 px-4 text-gray-800 hover:bg-brand-fuchsia hover:text-white transition duration-200">
+                <i class="fas fa-user-friends mr-2"></i> Clientes
+            </a>
+            <a href="ventas.html" class="block py-2 px-4 text-gray-800 hover:bg-brand-fuchsia hover:text-white transition duration-200">
+                <i class="fas fa-chart-line mr-2"></i> Estadísticas
+            </a>
+        </div>
+    </nav>
 
     <header class="bg-brand-fuchsia text-white shadow-md">
         <div class="container mx-auto px-6 py-3 text-center">
@@ -47,6 +98,16 @@
         <p>&copy; 2025 M&D Home. Todos los derechos reservados.</p>
     </footer>
 
-    <script defer src="app.js"></script>
+    <!-- Firebase Config -->
+    <script type="module" src="js/firebase-config.js"></script>
+    
+    <!-- Firebase Adapter -->
+    <script type="module" src="js/firebase-adapter.js"></script>
+    
+    <!-- App Script con Firebase -->
+    <script defer src="js/app-firebase.js" type="module"></script>
+    
+    <!-- Auth Script -->
+    <script type="module" src="js/auth.js"></script>
 </body>
 </html>

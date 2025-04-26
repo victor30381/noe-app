@@ -1,0 +1,311 @@
+/* style.css - Estilos para Bella Indumentaria Femenina */
+
+/* --- Importación de Fuente --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- Estilos Globales y Colores de Marca --- */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.bg-brand-fuchsia { background-color: #00BCD4; }
+.text-brand-fuchsia { color: #00BCD4; }
+.border-brand-fuchsia { border-color: #00BCD4; }
+.hover\:bg-brand-fuchsia-dark:hover { background-color: #0097A7; }
+
+.bg-brand-violet { background-color: #0D47A1; }
+.text-brand-violet { color: #0D47A1; }
+.border-brand-violet { border-color: #0D47A1; }
+.hover\:bg-brand-violet-dark:hover { background-color: #072B60; }
+
+/* --- Layout Básico --- */
+.min-h-screen-flex {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+/* --- Estilos para Mensajes de Feedback --- */
+.message {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+}
+
+.message-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #6EE7B7;
+}
+
+.message-error {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FCA5A5;
+}
+
+/* --- Estilos Específicos de Stock --- */
+#stockTable input[type="number"] {
+    max-width: 80px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid #D1D5DB;
+    text-align: center;
+}
+
+/* Mostrar flechas en input number */
+#stockTable input[type=number]::-webkit-inner-spin-button,
+#stockTable input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+    height: 30px;
+}
+
+#stockTable input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Estilos específicos para la página de stock */
+#page-stock .stock-quantity-input {
+    transition: all 0.2s ease-in-out;
+}
+
+#page-stock .stock-quantity-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+}
+
+#page-stock .deleteItemBtn {
+    transition: all 0.2s ease-in-out;
+}
+
+#page-stock .deleteItemBtn:hover {
+    transform: scale(1.1);
+}
+
+/* --- Estilos Específicos de Clientes (clientes.html) --- */
+
+/* Estilos para Modales */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 50;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 2rem; /* p-8 */
+    border-radius: 0.5rem; /* rounded-lg */
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+.modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #6B7280;
+    cursor: pointer;
+}
+.modal-close-btn:hover {
+    color: #374151;
+}
+/* Clase para mostrar modal */
+.modal.flex {
+    display: flex;
+}
+
+/* Estilos para botones de acción en tabla de clientes */
+.action-btn {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.action-btn:hover {
+    transform: scale(1.1);
+}
+/* Colores específicos para cada botón */
+.btn-purchase { color: #3B82F6; }
+.btn-payment { color: #10B981; }
+.btn-movements { color: #6366F1; }
+.btn-delete { color: #EF4444; }
+
+/* Estilos para lista de movimientos en modal */
+#movementsList li {
+    padding: 0.5rem 0;         /* py-2 */
+    border-bottom: 1px solid #e5e7eb; /* border-b border-gray-200 */
+}
+#movementsList li:last-child {
+    border-bottom: none;
+}
+.movement-compra { color: #DC2626; } /* text-red-600 */
+.movement-pago { color: #059669; }   /* text-green-600 */
+
+/* --- Estilos Específicos de Ventas (ventas.html) --- */
+#salesTable tfoot td {
+    font-weight: 600;          /* font-semibold */
+    background-color: #F9FAFB; /* bg-gray-50 */
+    /* Padding se aplica con Tailwind en HTML */
+}
+
+/* --- Estilos Adicionales (si fueran necesarios) --- */
+/* Puedes añadir más estilos aquí */
+
+/* Estilos personalizados para los colores de la marca */
+.bg-brand-fuchsia { background-color: #00BCD4; } /* Cian principal */
+.text-brand-fuchsia { color: #00BCD4; }
+.border-brand-fuchsia { border-color: #00BCD4; }
+.hover\:bg-brand-fuchsia-dark:hover { background-color: #0097A7; } /* Cian más oscuro para hover */
+
+.bg-brand-violet { background-color: #0D47A1; } /* Azul oscuro para detalles */
+.text-brand-violet { color: #0D47A1; }
+.border-brand-violet { border-color: #0D47A1; }
+.hover\:bg-brand-violet-dark:hover { background-color: #072B60; } /* Azul más oscuro para hover */
+
+/* --- Estilos para el Menú Hamburguesa --- */
+.mobile-menu-button {
+    transition: transform 0.3s ease;
+    z-index: 60;
+}
+
+.mobile-menu-button:hover {
+    transform: scale(1.1);
+}
+
+.menu-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.menu-overlay.opacity-100 {
+    opacity: 1;
+}
+
+.side-menu {
+    transition: transform 0.3s ease;
+}
+
+.side-menu.open {
+    transform: translateX(0);
+}
+
+/* Estilos para el perfil de usuario en el menú */
+#user-info img.rounded-full {
+    object-fit: cover;
+    border: 2px solid #00BCD4;
+}
+
+#login-btn {
+    transition: all 0.3s ease;
+}
+
+#login-btn:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#logout-btn {
+    transition: all 0.3s ease;
+}
+
+#logout-btn:hover {
+    background-color: #e5e7eb;
+}
+
+/* Asegurar que el menú esté por encima de otros elementos */
+.z-50 {
+    z-index: 50;
+}
+
+.z-60 {
+    z-index: 60;
+}
+
+/* Fuente Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Clases adicionales */
+.min-h-screen-flex {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+/* Estilo para mensajes */
+.message {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+}
+
+.message-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #6EE7B7;
+}
+
+.message-error {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FCA5A5;
+}
+
+/* Estilos específicos para la página de stock */
+#page-stock .stock-quantity-input {
+    transition: all 0.2s ease-in-out;
+}
+
+#page-stock .stock-quantity-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+}
+
+#page-stock .deleteItemBtn {
+    transition: all 0.2s ease-in-out;
+}
+
+#page-stock .deleteItemBtn:hover {
+    transform: scale(1.1);
+}
+
+/* Estilos adicionales */
+#totalStock,
+#totalClients,
+#monthlySales,
+#totalDebt {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 1rem;
+    }
+}
+
